@@ -24,7 +24,7 @@ def add_features(df):
         is_dog = check_is_dog(df['animal_type']),
         has_name = check_has_name(df['name']),
         sex = get_sex(df['sex_upon_outcome']),
-        neutered = get_neutered(df['sex_upon_outcome']),
+        neutered = getNEUtered(df['sex_upon_outcome']),
         hair_type = get_hair_type(df['breed']),
         days_upon_outcome = compute_days_upon_outcome(df['age_upon_outcome']),
     )
@@ -83,7 +83,7 @@ def get_sex(sex_upon_outcome):
     return sex
 
 
-def get_neutered(sex_upon_outcome):
+def getNEUtered(sex_upon_outcome):
     """Determine if an animal was intact or not.
     Parameters
     ----------
