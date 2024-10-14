@@ -21,12 +21,12 @@ def add_features(df):
     # df['days_upon_outcome'] = compute_days_upon_outcome(df['age_upon_outcome'])
 
     return df.assign(
-        is_dog = check_is_dog(df['animal_type']),
-        has_name = check_has_name(df['name']),
-        sex = get_sex(df['sex_upon_outcome']),
-        neutered = get_neutered(df['sex_upon_outcome']),
-        hair_type = get_hair_type(df['breed']),
-        days_upon_outcome = compute_days_upon_outcome(df['age_upon_outcome']),
+        is_dog=check_is_dog(df["animal_type"]),
+        has_name=check_has_name(df["name"]),
+        sex=get_sex(df["sex_upon_outcome"]),
+        neutered=get_neutered(df["sex_upon_outcome"]),
+        hair_type=get_hair_type(df["breed"]),
+        days_upon_outcome=compute_days_upon_outcome(df["age_upon_outcome"]),
     )
 
 
@@ -41,13 +41,12 @@ def check_is_dog(animal_type):
     result : pandas.Series
         Dog or not
     """
-    is_cat_dog = animal_type.str.lower().isin(['dog', 'cat'])
+    is_cat_dog = animal_type.str.lower().isin(["dog", "cat"])
     if not is_cat_dog.all():
-        print('Found something else but dogs and cats:\n%s',
-              animal_type[~is_cat_dog])
+        print("Found something else but dogs and cats:\n%s", animal_type[~is_cat_dog])
         raise RuntimeError("Found pets that are not dogs or cats.")
 
-    return animal_type.str.lower() == 'dog'
+    return animal_type.str.lower() == "dog"
 
 
 def check_has_name(name):
@@ -61,7 +60,7 @@ def check_has_name(name):
     result : pandas.Series
         Unknown or not.
     """
-    return name.str.lower() != 'unknown'
+    return name.str.lower() != "unknown"
 
 
 def get_sex(sex_upon_outcome):
@@ -75,10 +74,10 @@ def get_sex(sex_upon_outcome):
     sex : pandas.Series
         Sex when coming in
     """
-    sex = pd.Series('unknown', index=sex_upon_outcome.index)
+    sex = pd.Series("unknown", index=sex_upon_outcome.index)
 
-    sex.loc[sex_upon_outcome.str.endswith('Female')] = 'female'
-    sex.loc[sex_upon_outcome.str.endswith('Male')] = 'male'
+    sex.loc[sex_upon_outcome.str.endswith("Female")] = "female"
+    sex.loc[sex_upon_outcome.str.endswith("Male")] = "male"
 
     return sex
 
@@ -96,11 +95,11 @@ def get_neutered(sex_upon_outcome):
     """
     neutered = sex_upon_outcome.str.lower()
 
-    neutered.loc[neutered.str.contains('neutered')] = 'fixed'
-    neutered.loc[neutered.str.contains('spayed')] = 'fixed'
+    neutered.loc[neutered.str.contains("neutered")] = "fixed"
+    neutered.loc[neutered.str.contains("spayed")] = "fixed"
 
-    neutered.loc[neutered.str.contains('intact')] = 'intact'
-    neutered.loc[~neutered.isin(['fixed', 'intact'])] = 'unknown'
+    neutered.loc[neutered.str.contains("intact")] = "intact"
+    neutered.loc[~neutered.isin(["fixed", "intact"])] = "unknown"
 
     return neutered
 
@@ -117,13 +116,13 @@ def get_hair_type(breed):
         Hair type
     """
     hair_type = breed.str.lower()
-    valid_hair_types = ['shorthair', 'medium hair', 'longhair']
+    valid_hair_types = ["shorthair", "medium hair", "longhair"]
 
     for hair in valid_hair_types:
         is_hair_type = hair_type.str.contains(hair)
         hair_type[is_hair_type] = hair
 
-    hair_type[~hair_type.isin(valid_hair_types)] = 'unknown'
+    hair_type[~hair_type.isin(valid_hair_types)] = "unknown"
 
     return hair_type
 
@@ -140,9 +139,17 @@ def compute_days_upon_outcome(age_upon_outcome):
         Age in days
     """
     split_age = age_upon_outcome.str.split()
-    time = split_age.apply(lambda x: x[0] if x[0] != 'Unknown' else np.nan)
-    period = split_age.apply(lambda x: x[1] if x[0] != 'Unknown' else None)
-    period_mapping = {'year': 365, 'years': 365, 'weeks': 7, 'week': 7,
-                      'month': 30, 'months': 30, 'days': 1, 'day': 1}
+    time = split_age.apply(lambda x: x[0] if x[0] != "Unknown" else np.nan)
+    period = split_age.apply(lambda x: x[1] if x[0] != "Unknown" else None)
+    period_mapping = {
+        "year": 365,
+        "years": 365,
+        "weeks": 7,
+        "week": 7,
+        "month": 30,
+        "months": 30,
+        "days": 1,
+        "day": 1,
+    }
 
     return time.astype(float) * period.map(period_mapping)

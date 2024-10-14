@@ -10,7 +10,7 @@ project_root_path = Path(__file__).parent.parent.parent
 def main():
     print("----------- Started ----------- ")
 
-    csv_file = project_root_path / 'data/train.csv'
+    csv_file = project_root_path / "data/train.csv"
     animal_outcomes = load_data(csv_file.__str__())
 
     new = add_features(animal_outcomes)
