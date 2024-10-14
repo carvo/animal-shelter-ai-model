@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "carvo-prml"
+version = "0.1.0"
+description = "Carvo Prodready ML"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "animal_shelter", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.3"
+
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
