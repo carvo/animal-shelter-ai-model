@@ -1,10 +1,14 @@
 from fastapi import FastAPI
 from pathlib import Path
-from animal_shelter.FileLoader import load_data
+from animal_shelter.data_loader import load_data
+import logging
 
 app = FastAPI()
 project_root_path = Path(__file__).parent.parent.parent
-
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)-15s] %(name)s - %(levelname)s - %(message)s",
+)
 
 @app.get("/")
 async def root():

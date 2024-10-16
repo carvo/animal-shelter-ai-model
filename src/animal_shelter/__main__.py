@@ -1,11 +1,14 @@
+import logging
 from pathlib import Path
-
-from animal_shelter.FileLoader import load_data
-from animal_shelter.DataEnhancer import add_features
+from animal_shelter.data_loader import load_data
+from animal_shelter.features import add_features
 from animal_shelter.DataEnhancerOLD import add_features as add_features_old
 
 project_root_path = Path(__file__).parent.parent.parent
-
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)-15s] %(name)s - %(levelname)s - %(message)s",
+)
 
 def main():
     print("----------- Started ----------- ")
