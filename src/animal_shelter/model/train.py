@@ -1,47 +1,38 @@
-import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
-from pathlib import Path
 
 from animal_shelter.data_loader import load_data
 from animal_shelter.features import add_features
+from animal_shelter.model.default_features import DefaultFeatures
 
 project_root_path = Path(__file__).parent.parent.parent.parent
-print(project_root_path)
 
-csv_train_file = project_root_path / "data/train.csv"
-raw_data = load_data(csv_train_file.__str__())
+def full_train(input_path):
+    raw_data = _load_raw_data(input_path)
+    data_with_features = add_features(raw_data)
 
-with_features = add_features(raw_data)
-cat_features = [
-    "animal_type",
-    "is_dog",
-    "has_name",
-    "sex",
-    "hair_type",
-]
-num_features = ["days_upon_outcome"]
+    num_transformer = Pipeline([
+        ("imputer", SimpleImputer()), ("scaler", StandardScaler())
+    ])
+    cat_transformer = Pipeline([
+        ("onehot", OneHotEncoder(drop="first"))
+    ])
+    col_transformer = ColumnTransformer([
+        ("numeric", num_transformer, DefaultFeatures.cat_features),
+        ("categorical", cat_transformer, DefaultFeatures.num_features),
+    ])
 
-num_transformer = Pipeline(
-    steps=[("imputer", SimpleImputer()), ("scaler", StandardScaler())]
-)
-cat_transformer = Pipeline(steps=[("onehot", OneHotEncoder(drop="first"))])
-transformer = ColumnTransformer(
-    [
-        ("numeric", num_transformer, num_features),
-        ("categorical", cat_transformer, cat_features),
-    ]
-)
+    x = data_with_features[DefaultFeatures.cat_features + DefaultFeatures.num_features]
+    y = data_with_features["outcome_type"]
 
-clf_model = Pipeline(
-    [("transformer", transformer), ("model", RandomForestClassifier())]
-)
+    return Pipeline([
+        ("col_transformer", col_transformer), ("model", RandomForestClassifier())
+    ]).fit(x, y)
 
-X = with_features[cat_features + num_features]
-y = with_features["outcome_type"]
-
-clf_model.fit(X, y)
+def _load_raw_data(input_path):
+    csv_train_file = project_root_path / input_path
+    return load_data(csv_train_file.__str__())

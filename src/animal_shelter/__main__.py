@@ -1,7 +1,7 @@
 from pathlib import Path
+
 from animal_shelter.data_loader import load_data
 from animal_shelter.features import add_features
-from animal_shelter.model import train
 
 project_root_path = Path(__file__).parent.parent.parent
 
