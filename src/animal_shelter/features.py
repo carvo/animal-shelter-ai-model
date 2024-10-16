@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
+import logging
 
+LOG = logging.getLogger(__name__)
 
 def add_features(df):
     """Add some features to our data.
