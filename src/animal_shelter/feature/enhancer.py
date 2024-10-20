@@ -1,11 +1,13 @@
+import logging
+
 import numpy as np
 import pandas as pd
-import logging
 
 LOG = logging.getLogger(__name__)
 
+
 def add_features(df):
-    """Add some features to our data.
+    """Add some feature to our data.
     Parameters
     ----------
     df : pandas.DataFrame
@@ -13,7 +15,7 @@ def add_features(df):
     Returns
     -------
     with_features : pandas.DataFrame
-        DataFrame with some column features added
+        DataFrame with some column feature added
     """
     # df['is_dog'] = check_is_dog(df['animal_type'])
     # df['has_name'] = check_has_name(df['name'])

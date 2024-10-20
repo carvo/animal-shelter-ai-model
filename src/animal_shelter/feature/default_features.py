@@ -1,6 +1,6 @@
 
 class DefaultFeatures:
-    cat_features = [
+    CATEGORY_FEATURES = [
         "animal_type",
         "is_dog",
         "has_name",
@@ -8,4 +8,4 @@ class DefaultFeatures:
         "hair_type",
     ]
 
-    num_features = ["days_upon_outcome"]
+    NUM_FEATURES = ["days_upon_outcome"]

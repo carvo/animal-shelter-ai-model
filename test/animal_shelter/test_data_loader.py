@@ -1,4 +1,4 @@
-from animal_shelter import data_loader
+from animal_shelter.helper import data_loader
 import logging
 
 LOG = logging.getLogger(__name__)
